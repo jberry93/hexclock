@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <title>Hexclock</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="Simple clock using Luxon">
+        <meta name="og:title" property="og:title" content="Hexclock">
+        <meta name="og:description" content="Simple clock using Luxon">
+        <meta name="twitter:card" content="summary">
+        <meta name="robots" content="noindex, nofollow">
+        <style type="text/css">
+            html,
+            body {
+                margin: 0;
+                padding: 0;
+                width: 100%;
+                height: 100%;
+                font-family: 'Helvetica', sans-serif;
+            }
+
+            h1 {
+                margin: 0;
+            }
+
+            main {
+                width: 100%;
+                height: 100%;
+            }
+
+            section.clock-wrapper {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-direction: column;
+                width: 100%;
+                height: 100%;
+                background-color: #000000;
+            }
+
+            h1.hexclock,
+            h1.regular-clock {
+                color: #FFFFFF;
+                font-size: 64px;
+            }
+
+            @media screen and (max-width: 767px) {
+                h1.hexclock,
+                h1.regular-clock {
+                    font-size: 50px;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <noscript>
+            You might want to turn JavaScript back on to get the clock working :)
+        </noscript>
+        <main>
+            <section class="clock-wrapper">
+                <h1 class="hexclock">#000000</h1>
+                <h1 class="regular-clock">00:00:00 XX</h1>
+            </section>
+        </main>
+        <script src="https://cdn.jsdelivr.net/npm/luxon@1.22.0/build/global/luxon.min.js"></script>
+        <script type="text/javascript">
+            (() => {
+                console.log('hello', { luxon });
+                const clockWrapper = document.querySelector('section.clock-wrapper');
+                const hexclock = document.querySelector('h1.hexclock');
+                const regularClock = document.querySelector('h1.regular-clock');
+
+                setInterval(() => {
+                    const now = luxon.DateTime.local();
+                    let hour = '',
+                        minute = '',
+                        second = '';
+
+                    hour = now.hour <= 9 ? `0${now.hour}` : now.hour;
+                    minute = now.minute <= 9 ? `0${now.minute}` : now.minute;
+                    second = now.second <= 9 ? `0${now.second}` : now.second;
+                    const time = `#${hour}${minute}${second}`;
+
+                    hexclock.textContent = time;
+                    clockWrapper.style.backgroundColor = time;
+
+                    regularClock.textContent = now.toLocaleString(luxon.DateTime.TIME_WITH_SECONDS);
+                    document.title = `Hexclock | ${time}`;
+                }, 1000);
+            })();
+        </script>
+    </body>
+</html>
